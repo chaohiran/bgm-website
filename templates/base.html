@@ -1,19 +1,66 @@
 <!doctype html>
 <html lang="{{ current_lang or 'th' }}">
 <head>
+
+  <!-- Charset -->
+  <meta charset="utf-8">
+
+  <!-- Responsive -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <meta charset="utf-8">
-  <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+  <!-- Favicon -->
+  <link rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="{{ url_for('static', filename='img/favicon-32.png') }}">
 
-  <meta property="og:title" content="Belgium Industrial">
-  <meta property="og:description" content="Industrial products and electrical solutions">
-  <meta property="og:image" content="{{ url_for('static', filename='img/logo.png', _external=True) }}">
-  <meta property="og:type" content="website">
+  <link rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="{{ url_for('static', filename='img/favicon-192.png') }}">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon"
+        href="{{ url_for('static', filename='img/favicon-192.png') }}">
 
+  <link rel="shortcut icon"
+        href="/favicon.ico">
+
+  <!-- SEO -->
+  <meta name="description"
+        content="Industrial products and electrical solutions">
+
+  <!-- Open Graph -->
+  <meta property="og:title"
+        content="Belgium Industrial">
+
+  <meta property="og:description"
+        content="Industrial products and electrical solutions">
+
+  <meta property="og:image"
+        content="{{ url_for('static',
+        filename='img/logo.png',
+        _external=True) }}">
+
+  <meta property="og:type"
+        content="website">
+
+  <!-- Google Organization Logo -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Belgium Industrial",
+    "url":"https://belgiumindustry.com",
+    "logo":"https://belgiumindustry.com/static/img/logo.png"
+  }
+  </script>
+
+  <!-- Title -->
   <title>
     {% block title %}
       {{ t('company_name') }}
@@ -24,9 +71,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-  <!-- Custom -->
+  <!-- Custom CSS -->
   <link rel="stylesheet"
         href="{{ url_for('static', filename='css/site.css') }}">
+
 </head>
 
 <body class="bg-body-tertiary">
