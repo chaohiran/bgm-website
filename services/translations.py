@@ -147,7 +147,7 @@ TRANSLATIONS = {
           "services_consult_title": "ให้คำปรึกษาด้านมาตรฐาน",
           "services_consult_desc": "ให้คำปรึกษาด้านมาตรฐาน ATEX และ IECEx สำหรับพื้นที่อันตราย",
 
-          "admin_logged_in": "เข้าสู่ระบบ",
+          "admin_logged_in": "สถานะ แอดมิน",
           "logout": "ออกจากระบบ",
 
           "admin_login": "เข้าสู่ระบบ",
@@ -298,7 +298,7 @@ TRANSLATIONS = {
           "services_consult_title": "Standards Consulting",
           "services_consult_desc": "Consulting services for ATEX and IECEx hazardous area standards",
 
-          "admin_logged_in": "Login",
+          "admin_logged_in": "Admin status",
           "logout": "Logout",
 
           "admin_login": "Login",
@@ -449,7 +449,7 @@ TRANSLATIONS = {
         "services_consult_title": "Tư vấn tiêu chuẩn",
         "services_consult_desc": "Tư vấn tiêu chuẩn ATEX và IECEx cho khu vực nguy hiểm",
 
-        "admin_logged_in": "Đăng nhập",
+        "admin_logged_in": "Trạng thái quản trị viên",
         "logout": "Đăng xuất",
 
         "admin_login": "Đăng nhập",
