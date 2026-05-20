@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ t(product.name_key) }} | BGM
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <div class="row g-5 align-items-start">
+
+    <div class="col-lg-6">
+
+      <img
+        src="{{ url_for('static', filename='img/products/' ~ product.image) }}"
+        class="img-fluid rounded-4 shadow-sm"
+      >
+
+    </div>
+
+    <div class="col-lg-6">
+
+      <div class="text-secondary small mb-2">
+        {{ t(product.category_key) }}
+      </div>
+
+      <h1 class="fw-bold mb-3">
+        {{ t(product.name_key) }}
+      </h1>
+
+      <p class="text-secondary">
+        {{ t(product.short_key) }}
+      </p>
+
+      <ul class="mt-4">
+
+        {% for fk in product.features_keys %}
+        <li>{{ t(fk) }}</li>
+        {% endfor %}
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

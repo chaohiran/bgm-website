@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('admin_login') }}{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+
+      <div class="login-card">
+
+        <h2 class="mb-2 fw-bold text-center">
+          {{ t('admin_login') }}
+        </h2>
+
+        <p class="text-secondary text-center mb-4">
+          {{ t('admin_login_hint') }}
+        </p>
+
+        {% if error %}
+        <div class="alert alert-danger">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+          <input
+            type="text"
+            name="username"
+            class="form-control login-input mb-3"
+            placeholder="{{ t('username') }}"
+            required
+          >
+
+          <input
+            type="password"
+            name="password"
+            class="form-control login-input mb-4"
+            placeholder="{{ t('password') }}"
+            required
+          >
+
+          <button class="btn login-btn w-100">
+            {{ t('login') }}
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+body{
+  background:#f2f2f7;
+}
+
+.login-card{
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(18px);
+
+  border-radius:28px;
+
+  padding:35px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+}
+
+.login-input{
+  border:none;
+  border-radius:16px;
+
+  padding:14px 16px;
+
+  background:#f5f5f7;
+}
+
+.login-input:focus{
+  box-shadow:0 0 0 4px rgba(0,122,255,.15);
+}
+
+.login-btn{
+  border:none;
+  border-radius:16px;
+
+  padding:14px;
+
+  font-weight:600;
+  color:white;
+
+  background:linear-gradient(
+    180deg,
+    #0a84ff,
+    #0066ff
+  );
+}
+
+</style>
+
+{% endblock %}
