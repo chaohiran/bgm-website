@@ -26,9 +26,9 @@
     /
 
     <a href="{{ url_for(
-    'products.products_category',
-    key=product.category_key
-) }}">
+      'products.products_category',
+      key=product.category_key
+    ) }}">
 
       {% if current_lang == 'th' %}
         {{ product.category_name_th }}
@@ -106,6 +106,28 @@
         {% endif %}
 
       </p>
+
+      <!-- ========================= -->
+      <!-- FULL DESCRIPTION -->
+      <!-- ========================= -->
+
+      {% if current_lang == 'th' %}
+        {% set full_desc = product.description_th %}
+      {% else %}
+        {% set full_desc = product.description_en %}
+      {% endif %}
+
+      {% if full_desc %}
+
+      <hr class="my-4">
+
+      <div class="product-description lh-lg">
+
+        {{ full_desc | replace('\n', '<br>') | safe }}
+
+      </div>
+
+      {% endif %}
 
       <!-- ========================= -->
       <!-- 📄 PDF SECTION -->

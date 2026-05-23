@@ -89,6 +89,8 @@ def create():
         name_en = (request.form.get("name_en") or "").strip()
         short_th = request.form.get("short_th")
         short_en = request.form.get("short_en")
+        description_th = request.form.get("description_th")
+        description_en = request.form.get("description_en")
         category_id = request.form.get("category_id")
 
         if not slug or not name_th or not name_en:
@@ -125,13 +127,15 @@ def create():
             INSERT INTO products (
                 slug, name_th, name_en,
                 short_th, short_en,
+                description_th, description_en,
                 category_id, image,
                 catalog_pdf, manual_pdf, other_pdf
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             slug, name_th, name_en,
             short_th, short_en,
+            description_th, description_en,
             category_id, image,
             catalog_pdf, manual_pdf, other_pdf
         ))
@@ -184,6 +188,8 @@ def edit(product_id):
         name_en = (request.form.get("name_en") or "").strip()
         short_th = request.form.get("short_th")
         short_en = request.form.get("short_en")
+        description_th = request.form.get("description_th")
+        description_en = request.form.get("description_en")
         category_id = request.form.get("category_id")
 
         # IMAGE UPDATE
@@ -222,12 +228,14 @@ def edit(product_id):
             UPDATE products
             SET slug=?, name_th=?, name_en=?,
                 short_th=?, short_en=?,
+                description_th=?, description_en=?,
                 category_id=?, image=?,
                 catalog_pdf=?, manual_pdf=?, other_pdf=?
             WHERE id=?
         """, (
             slug, name_th, name_en,
             short_th, short_en,
+            description_th, description_en,
             category_id, image,
             catalog_pdf, manual_pdf, other_pdf,
             product_id

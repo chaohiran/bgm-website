@@ -56,27 +56,6 @@
         >
       </div>
 
-      <!-- CATEGORY -->
-      <div class="mb-3">
-        <label class="form-label">Category</label>
-
-        <select name="category_id" class="form-select" required>
-
-          {% for c in categories %}
-          <option value="{{ c.id }}"
-            {% if c.id == product.category_id %}selected{% endif %}>
-
-            {% if current_lang == 'th' %}
-              {{ c.name_th }}
-            {% else %}
-              {{ c.name_en }}
-            {% endif %}
-
-          </option>
-          {% endfor %}
-
-        </select>
-      </div>
 
       <!-- SHORT TH -->
       <div class="mb-3">
@@ -102,6 +81,54 @@
           class="form-control"
           rows="3"
         >{{ product['short_en'] or '' }}</textarea>
+      </div>
+
+      <!-- DESCRIPTION TH -->
+<div class="mb-3">
+  <label class="form-label">
+    รายละเอียดสินค้า (TH)
+  </label>
+
+  <textarea
+    name="description_th"
+    rows="8"
+    class="form-control"
+  >{{ product.description_th if product else '' }}</textarea>
+</div>
+
+<!-- DESCRIPTION EN -->
+<div class="mb-3">
+  <label class="form-label">
+    Product Description (EN)
+  </label>
+
+  <textarea
+    name="description_en"
+    rows="8"
+    class="form-control"
+  >{{ product.description_en if product else '' }}</textarea>
+</div>
+
+<!-- CATEGORY -->
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+
+        <select name="category_id" class="form-select" required>
+
+          {% for c in categories %}
+          <option value="{{ c.id }}"
+            {% if c.id == product.category_id %}selected{% endif %}>
+
+            {% if current_lang == 'th' %}
+              {{ c.name_th }}
+            {% else %}
+              {{ c.name_en }}
+            {% endif %}
+
+          </option>
+          {% endfor %}
+
+        </select>
       </div>
 
       <hr class="my-4">
