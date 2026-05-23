@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Product | BGM{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <h2 class="fw-bold mb-4">
+    ✏ Edit Product
+  </h2>
+
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+
+    <form method="POST" enctype="multipart/form-data">
+
+      <!-- SLUG -->
+      <div class="mb-3">
+        <label class="form-label">Slug</label>
+
+        <input
+          type="text"
+          name="slug"
+          class="form-control"
+          value="{{ product['slug'] }}"
+          required
+        >
+      </div>
+
+      <!-- NAME TH -->
+      <div class="mb-3">
+        <label class="form-label">
+          ชื่อสินค้า (ไทย)
+        </label>
+
+        <input
+          type="text"
+          name="name_th"
+          class="form-control"
+          value="{{ product['name_th'] or '' }}"
+          required
+        >
+      </div>
+
+      <!-- NAME EN -->
+      <div class="mb-3">
+        <label class="form-label">
+          Product Name (English)
+        </label>
+
+        <input
+          type="text"
+          name="name_en"
+          class="form-control"
+          value="{{ product['name_en'] or '' }}"
+          required
+        >
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+
+        <select name="category_id" class="form-select" required>
+
+          {% for c in categories %}
+          <option value="{{ c.id }}"
+            {% if c.id == product.category_id %}selected{% endif %}>
+
+            {% if current_lang == 'th' %}
+              {{ c.name_th }}
+            {% else %}
+              {{ c.name_en }}
+            {% endif %}
+
+          </option>
+          {% endfor %}
+
+        </select>
+      </div>
+
+      <!-- SHORT TH -->
+      <div class="mb-3">
+        <label class="form-label">
+          คำอธิบายสั้น (ไทย)
+        </label>
+
+        <textarea
+          name="short_th"
+          class="form-control"
+          rows="3"
+        >{{ product['short_th'] or '' }}</textarea>
+      </div>
+
+      <!-- SHORT EN -->
+      <div class="mb-3">
+        <label class="form-label">
+          Short Description (English)
+        </label>
+
+        <textarea
+          name="short_en"
+          class="form-control"
+          rows="3"
+        >{{ product['short_en'] or '' }}</textarea>
+      </div>
+
+      <hr class="my-4">
+
+      <!-- IMAGE -->
+      <div class="mb-3">
+
+        <label class="form-label">
+          Current Image
+        </label>
+
+        <div class="mb-2">
+          <img
+            src="{{ url_for('static', filename='img/products/' ~ (product['image'] or 'default.jpg')) }}"
+            class="rounded-3 border"
+            style="width:180px;height:180px;object-fit:cover;"
+          >
+        </div>
+
+        <input
+          type="file"
+          name="image_file"
+          class="form-control"
+          accept="image/*"
+        >
+      </div>
+
+      <hr class="my-4">
+
+      <!-- PDF -->
+      <h5 class="fw-bold mb-3">
+        Product Files (PDF)
+      </h5>
+
+      <!-- Catalog -->
+      <div class="mb-3">
+
+        <label class="form-label">
+          Catalog PDF
+        </label>
+
+        {% if product['catalog_pdf'] %}
+  <div class="mb-2">
+
+    <a
+      href="{{ url_for('static', filename='pdf/products/' ~ product['catalog_pdf']) }}"
+      target="_blank"
+      class="btn btn-sm btn-outline-primary"
+    >
+      📄 View Current Catalog
+    </a>
+
+    <a
+      href="{{ url_for('admin_products.delete_pdf',
+        product_id=product['id'],
+        pdf_type='catalog'
+      ) }}"
+      class="btn btn-sm btn-outline-danger"
+      onclick="return confirm('Delete this PDF?')"
+    >
+      🗑 Delete
+    </a>
+
+    <div class="small text-muted mt-1">
+      {{ product['catalog_pdf'] }}
+    </div>
+
+  </div>
+{% endif %}
+
+        <input
+          type="file"
+          name="catalog_pdf"
+          class="form-control"
+          accept="application/pdf"
+        >
+
+      </div>
+
+      <!-- Manual -->
+      <div class="mb-3">
+
+        <label class="form-label">
+          Manual PDF
+        </label>
+
+        {% if product['manual_pdf'] %}
+  <div class="mb-2">
+
+    <a
+      href="{{ url_for('static', filename='pdf/products/' ~ product['manual_pdf']) }}"
+      target="_blank"
+      class="btn btn-sm btn-outline-primary"
+    >
+      📄 View Current Manual
+    </a>
+
+    <!-- DELETE BUTTON -->
+    <a
+      href="{{ url_for(
+        'admin_products.delete_pdf',
+        product_id=product['id'],
+        pdf_type='manual'
+      ) }}"
+      class="btn btn-sm btn-outline-danger"
+      onclick="return confirm('Delete this manual PDF?')"
+    >
+      🗑 Delete
+    </a>
+
+    <div class="small text-muted mt-1">
+      {{ product['manual_pdf'] }}
+    </div>
+
+  </div>
+{% endif %}
+
+        <input
+          type="file"
+          name="manual_pdf"
+          class="form-control"
+          accept="application/pdf"
+        >
+
+      </div>
+
+      <!-- Other -->
+      <div class="mb-3">
+
+        <label class="form-label">
+          Other PDF
+        </label>
+
+        {% if product['other_pdf'] %}
+  <div class="mb-2">
+
+    <a
+      href="{{ url_for('static', filename='pdf/products/' ~ product['other_pdf']) }}"
+      target="_blank"
+      class="btn btn-sm btn-outline-primary"
+    >
+      📄 View Current PDF
+    </a>
+
+    <!-- DELETE BUTTON -->
+    <a
+      href="{{ url_for(
+        'admin_products.delete_pdf',
+        product_id=product['id'],
+        pdf_type='other'
+      ) }}"
+      class="btn btn-sm btn-outline-danger"
+      onclick="return confirm('Delete this PDF?')"
+    >
+      🗑 Delete
+    </a>
+
+    <div class="small text-muted mt-1">
+      {{ product['other_pdf'] }}
+    </div>
+
+  </div>
+{% endif %}
+
+        <input
+          type="file"
+          name="other_pdf"
+          class="form-control"
+          accept="application/pdf"
+        >
+
+      </div>
+
+      <hr class="my-4">
+
+      <!-- BUTTONS -->
+      <div class="d-flex gap-2">
+
+        <button type="submit" class="btn btn-primary w-100">
+          Save Changes
+        </button>
+
+        <a href="{{ url_for('products.product_detail', slug=product.slug) }}"
+           class="btn btn-secondary w-100">
+          Cancel
+        </a>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+{% endblock %}

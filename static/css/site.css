@@ -1,0 +1,551 @@
+:root{
+  --brand: #f97316;          /* ส้มแกงหลัก */
+  --brand2: #ea580c;         /* ส้มเข้ม */
+  --brand-soft: rgba(249,115,22,.14);
+  --brand-border: rgba(249,115,22,.35);
+  --brand-glow: rgba(249,115,22,.35);
+  --font-ios: -apple-system, BlinkMacSystemFont,
+              "SF Pro Display","SF Pro Text",
+              "Inter","Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.navbar{
+  font-family: var(--font-ios);
+}
+
+/* =========================
+   iOS-style (mobile first)
+   ========================= */
+
+.ios-hero{
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* รูปอุตสาหกรรมจางๆ เฉพาะ hero */
+.ios-hero::before{
+  content:"";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-image: url("/static/img/bg-industry-v3.jpg"); /* แนะนำแบบนี้ชัวร์สุด */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+/* ไล่สีทับอีกรอบให้ยังเป็นแนว iOS */
+.ios-hero::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    radial-gradient(900px 420px at 15% 5%, rgba(249,115,22,.28), transparent 60%),
+    radial-gradient(700px 360px at 85% 0%, rgba(234,88,12,.22), transparent 58%),
+    linear-gradient(180deg, rgba(255,247,237,.35), rgba(255,237,213,.55));
+}
+
+/* ให้ content ใน hero อยู่เหนือพื้นหลัง */
+.ios-hero > .container{
+  position: relative;
+  z-index: 1;
+}
+
+
+
+.ios-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 13px;
+  color: rgba(0,0,0,.75);
+}
+
+.ios-dot{
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  background: var(--brand);
+  box-shadow: 0 0 0 4px rgba(249,115,22,.25);
+}
+
+.ios-title{
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(2.05rem, 4.8vw, 3.0rem);
+  color: #0b1220;
+}
+
+.ios-subtitle{
+  font-size: 1.05rem;
+  color: rgba(11,18,32,.72);
+  max-width: 56ch;
+}
+
+.ios-btn{
+  border-radius: 999px !important;
+  padding: 12px 18px !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(0,0,0,.08) !important;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.ios-btn:active{
+  transform: scale(.96);
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+}
+
+.ios-btn-primary{
+  background: linear-gradient(180deg, var(--brand), var(--brand2)) !important;
+  border-color: rgba(249,115,22,.45) !important;
+  box-shadow: 0 14px 30px rgba(249,115,22,.35);
+}
+
+.ios-btn-ghost{
+  background: rgba(255,255,255,.8) !important;
+  color: rgba(0,0,0,.78) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.ios-chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ios-chip{
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.06);
+  color: rgba(0,0,0,.68);
+  font-size: 13px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.05);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.ios-card{
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 18px 40px rgba(0,0,0,.08);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.ios-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 28px 60px rgba(0,0,0,.14);
+}
+
+.ios-card-glass{
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px;
+}
+
+.ios-card-soft{
+  background: rgba(255,255,255,.92);
+  padding: 18px;
+}
+
+.ios-badge{
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(249,115,22,.14);
+  border: 1px solid rgba(249,115,22,.35);
+  color: #c2410c;
+}
+
+.ios-mini{
+  padding: 12px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(0,0,0,.05);
+}
+
+.ios-mini-title{
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ios-mini-desc{
+  margin-top: 3px;
+  font-size: 13px;
+  color: rgba(0,0,0,.62);
+}
+
+.ios-sep{
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,.10), transparent);
+}
+
+.ios-metric{
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(0,0,0,.05);
+  text-align: center;
+}
+
+.ios-metric-num{
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.ios-metric-label{
+  font-size: 12px;
+  color: rgba(0,0,0,.58);
+}
+
+.ios-h2{
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #0b1220;
+}
+
+.ios-hint{
+  font-size: 13px;
+  color: rgba(0,0,0,.55);
+}
+
+.ios-icon{
+  width: 52px; height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(249,115,22,.14);
+  border: 1px solid rgba(249,115,22,.28);
+  color: #c2410c;
+  font-size: 22px;
+}
+
+.ios-card-title{
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-top: 12px;
+  color: #0b1220;
+}
+
+.ios-card-desc{
+  margin-top: 6px;
+  color: rgba(0,0,0,.62);
+}
+
+.ios-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  text-decoration: none;
+  color: #ea580c;
+}
+.ios-link:hover{
+  text-decoration: underline;
+  color: #c2410c;
+}
+
+
+/* มือถือ: ปุ่มเต็มความกว้างกดง่ายขึ้น */
+@media (max-width: 576px){
+  .ios-btn{
+    width: 100%;
+  }
+}
+/* Hero entrance animation */
+.animate-hero{
+  animation: heroIn 0.9s ease-out both;
+}
+
+@keyframes heroIn{
+  from{
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all .6s ease;
+}
+
+.reveal.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-brand{
+  background: linear-gradient(180deg, #f97316, #ea580c) !important;
+  border-color: rgba(249,115,22,.45) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 30px rgba(249,115,22,.25);
+}
+.btn-brand:hover{ filter: brightness(.98); }
+
+.btn-outline-brand{
+  border-color: rgba(249,115,22,.55) !important;
+  color: #c2410c !important;
+  background: rgba(255,255,255,.7) !important;
+}
+.btn-outline-brand:hover{
+  background: rgba(249,115,22,.12) !important;
+  border-color: rgba(249,115,22,.75) !important;
+}
+/* ====== ปุ่มส้มต้นแบบ (เหมือนรูป) ====== */
+.btn-quote{
+  background: #f97316;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px;
+  font-weight: 700;
+  padding: 6px 16px;
+}
+
+/* ====== เมนู navbar แบบเดียวกับปุ่ม ====== */
+.nav-quote{
+  font-family: var(--font-ios);
+  font-size: 15px;
+  font-weight: 500;        /* iOS default feel */
+  letter-spacing: -0.01em; /* ตัวอักษรชิดขึ้น */
+  color: #111827 !important;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+/* active = ส้มเป๊ะ ๆ */
+.nav-quote-active{
+  background: #f97316;
+  color: #fff !important;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* กัน Bootstrap ทับ */
+.nav-quote-active.nav-link{ color:#fff !important; }
+
+/* เมนู navbar ปกติ */
+.nav-quote{
+  color: #111827 !important;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+/* เมนู active = ปุ่มส้ม (ใช้กับทุกเมนู รวมถึงใบเสนอราคา) */
+.nav-quote-active{
+  background: #f97316;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* กัน bootstrap */
+.nav-quote-active.nav-link{
+  color:#fff !important;
+}
+
+.navbar-brand{
+  display: flex;
+  align-items: center;   /* ⭐ ตัวนี้คือหัวใจ */
+  gap: 10px;
+  padding: 0;            /* ตัดพื้นที่บนล่างทิ้ง */
+  line-height: 1;
+}
+.brand-logo{
+  height: 46px;          /* แนะนำ 42–46 กำลังสวย */
+  width: auto;
+  display: block;        /* ตัด baseline ช่องว่าง */
+  margin: 0;
+}
+.brand-name{
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.1;      /* ไม่ให้กินพื้นที่บนล่าง */
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+/* กำหนดความสูงแถบ header / navbar */
+.navbar{
+  height: 64px;          /* ⭐ ปรับเลขนี้ได้ตามใจ */
+  min-height: 64px;
+  padding: 0;            /* ตัด padding บนล่าง bootstrap */
+  display: flex;
+  align-items: center;   /* จัดทุกอย่างให้อยู่กลางแนวตั้ง */
+}
+
+@media (max-width: 576px){
+  .brand-logo{
+    height: 34px;
+  }
+  .brand-name{
+    font-size: 1rem;
+  }
+}
+.lang-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flag{
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* ===== Language switch active ===== */
+.lang-btn.active{
+  background: rgba(249,115,22,.22) !important;
+  border-color: rgba(249,115,22,.9) !important;
+  color: #c2410c !important;
+  font-weight: 700;
+}
+
+/* กัน Bootstrap hover / focus ทับ */
+.lang-btn.active:hover,
+.lang-btn.active:focus{
+  background: rgba(249,115,22,.28) !important;
+  border-color: rgba(249,115,22,1) !important;
+  color: #c2410c !important;
+}
+.ios-footer{
+  background: linear-gradient(
+    180deg,
+    rgba(249,115,22,.08),
+    rgba(249,115,22,.14)
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 48px 0 28px;
+  font-family: var(--font-ios);
+}
+
+.ios-footer-title{
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -.01em;
+  margin-bottom: 14px;
+  color: #0b1220;
+}
+
+.ios-footer-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ios-footer-list li{
+  font-size: 13px;
+  color: rgba(11,18,32,.7);
+  margin-bottom: 6px;
+}
+
+.ios-footer-text{
+  font-size: 13px;
+  color: rgba(11,18,32,.7);
+  line-height: 1.6;
+}
+
+.ios-footer-social{
+  display: flex;
+  gap: 10px;
+}
+.ios-footer-social a{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-size: 14px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.06);
+  color: #ea580c;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.ios-footer-bottom{
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  text-align: center;
+  font-size: 12px;
+  color: rgba(0,0,0,.55);
+}
+.footer-follow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* social icons */
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5a1f;
+  font-size: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  transition: .2s ease;
+}
+
+.footer-social a:hover {
+  transform: translateY(-2px);
+}
+
+/* QR card */
+.footer-qr-card {
+  width: 110px;
+  background: rgba(255,255,255,.85);
+  border-radius: 18px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
+}
+
+.footer-qr-card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.footer-qr-card span {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
+@media (max-width: 768px) {
+  .footer-follow {
+    align-items: center;
+  }
+}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if current_lang == 'th' %}
+    เพิ่มสินค้า
+  {% else %}
+    Create Product
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <h2 class="fw-bold mb-4">
+    {% if current_lang == 'th' %}
+      เพิ่มสินค้า
+    {% else %}
+      Create Product
+    {% endif %}
+  </h2>
+
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+
+    <form method="POST" enctype="multipart/form-data">
+
+      <!-- SLUG -->
+      <div class="mb-3">
+        <label class="form-label">Slug</label>
+        <input type="text" name="slug" class="form-control" required>
+      </div>
+
+      <!-- NAME TH -->
+      <div class="mb-3">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            ชื่อสินค้า (ไทย)
+          {% else %}
+            Product Name (Thai)
+          {% endif %}
+        </label>
+
+        <input type="text" name="name_th" class="form-control" required>
+      </div>
+
+      <!-- NAME EN -->
+      <div class="mb-3">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            ชื่อสินค้า (อังกฤษ)
+          {% else %}
+            Product Name (English)
+          {% endif %}
+        </label>
+
+        <input type="text" name="name_en" class="form-control" required>
+      </div>
+
+      <!-- SHORT TH -->
+      <div class="mb-3">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            คำอธิบายสั้น (ไทย)
+          {% else %}
+            Short Description (Thai)
+          {% endif %}
+        </label>
+
+        <input type="text" name="short_th" class="form-control">
+      </div>
+
+      <!-- SHORT EN -->
+      <div class="mb-3">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            Short Description (English)
+          {% else %}
+            Short Description (English)
+          {% endif %}
+        </label>
+
+        <input type="text" name="short_en" class="form-control">
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="mb-3">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            หมวดหมู่
+          {% else %}
+            Category
+          {% endif %}
+        </label>
+
+        <select name="category_id" class="form-select" required>
+          {% for c in categories %}
+          <option value="{{ c.id }}">
+            {% if current_lang == 'th' %}
+              {{ c.name_th }}
+            {% else %}
+              {{ c.name_en }}
+            {% endif %}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- IMAGE -->
+      <div class="mb-4">
+        <label class="form-label">
+          {% if current_lang == 'th' %}
+            รูปสินค้า
+          {% else %}
+            Product Image
+          {% endif %}
+        </label>
+
+        <input type="file" name="image_file" class="form-control" accept="image/*">
+      </div>
+
+      <hr class="my-4">
+
+      <!-- PDF -->
+      <h5 class="fw-bold mb-3">
+        {% if current_lang == 'th' %}
+          ไฟล์สินค้า (PDF)
+        {% else %}
+          Product Files (PDF)
+        {% endif %}
+      </h5>
+
+      <!-- Catalog -->
+      <div class="mb-3">
+        <label class="form-label">Catalog PDF</label>
+        <input type="file" name="catalog_pdf" class="form-control" accept="application/pdf">
+      </div>
+
+      <!-- Manual -->
+      <div class="mb-3">
+        <label class="form-label">Manual PDF</label>
+        <input type="file" name="manual_pdf" class="form-control" accept="application/pdf">
+      </div>
+
+      <!-- Other -->
+      <div class="mb-3">
+        <label class="form-label">Other PDF</label>
+        <input type="file" name="other_pdf" class="form-control" accept="application/pdf">
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="btn btn-primary w-100 mt-3">
+        {% if current_lang == 'th' %}
+          สร้างสินค้า
+        {% else %}
+          Create Product
+        {% endif %}
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+{% endblock %}

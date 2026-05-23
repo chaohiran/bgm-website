@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}{{ profile.name }} | {{ t('nav_home') }}{% endblock %}
+
+{% block content %}
+
+<section class="ios-hero animate-hero">
+  <div class="container py-4 py-md-5">
+    <div class="row align-items-center g-4">
+
+      <!-- LEFT -->
+      <div class="col-12 col-lg-7">
+        <div class="ios-pill mb-3">
+          <span class="ios-dot"></span>
+          <span>{{ t('hero_badge') }}</span>
+        </div>
+
+        <h1 class="ios-title mb-2">{{ profile.name }}</h1>
+
+        {# ✅ tagline แปลตามภาษา (ต้องมี profile.tagline_key ใน data_store.py) #}
+        <p class="ios-subtitle mb-4">
+          {{ t(profile.tagline_key) if profile.tagline_key is defined else profile.tagline }}
+        </p>
+
+        <div class="d-grid d-sm-flex gap-2">
+          <a class="btn ios-btn ios-btn-primary"
+             href="{{ url_for('products.products_list') }}">
+            {{ t('cta_products') }}
+          </a>
+
+          <a class="btn ios-btn ios-btn-ghost"
+             href="{{ url_for('pages.page', slug='contact') }}">
+            {{ t('cta_contact') }}
+          </a>
+        </div>
+
+        <div class="ios-chips mt-4">
+          <div class="ios-chip">📞 {{ profile.phone }}</div>
+          <div class="ios-chip">✉️ {{ profile.email }}</div>
+
+          {# ✅ address แปลตามภาษา (ต้องมี profile.address_key ใน data_store.py) #}
+          <div class="ios-chip">
+            📍 {{ t(profile.address_key) if profile.address_key is defined else profile.address }}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="col-12 col-lg-5">
+        <div class="ios-card ios-card-glass">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="fw-semibold">{{ t('highlights') }}</div>
+            <span class="ios-badge">{{ t('responsive') }}</span>
+          </div>
+
+          <div class="row g-2">
+            {% for h in highlights %}
+            <div class="col-12">
+              <div class="ios-mini">
+                {# ✅ highlights แปลตามภาษา (ต้องมี title_key/desc_key ใน data_store.py) #}
+                <div class="ios-mini-title">
+                  {{ t(h.title_key) if h.title_key is defined else h.title }}
+                </div>
+                <div class="ios-mini-desc">
+                  {{ t(h.desc_key) if h.desc_key is defined else h.desc }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="ios-sep my-3"></div>
+
+          <div class="ios-metrics row g-2">
+            <div class="col-4">
+              <div class="ios-metric reveal">
+                <div class="ios-metric-num">{{ t('metric_support') }}</div>
+                <div class="ios-metric-label">{{ t('metric_support2') }}</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="ios-metric reveal">
+                <div class="ios-metric-num">{{ t('metric_standard') }}</div>
+                <div class="ios-metric-label">ISO</div>
+              </div>
+            </div>
+            <div class="col-4">
+  <div class="ios-metric reveal">
+    <div class="ios-metric-num">30+</div>
+    <div class="ios-metric-label">{{ t('metric_experience') }}</div>
+  </div>
+</div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="container pb-5">
+  <div class="d-flex align-items-end justify-content-between mb-3 mt-2">
+    <div>
+      <h2 class="ios-h2 mb-1">{{ t('section_services') }}</h2>
+      <div class="ios-hint">{{ t('section_services_hint') }}</div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="ios-card ios-card-soft h-100">
+        <div class="ios-icon">📦</div>
+        <div class="ios-card-title">{{ t('svc_supply') }}</div>
+        <div class="ios-card-desc">{{ t('svc_supply_desc') }}</div>
+        <div class="ios-card-actions mt-3">
+          <a class="ios-link" href="{{ url_for('products.products_list') }}">
+            {{ t('view_products') }} →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="ios-card ios-card-soft h-100">
+        <div class="ios-icon">🧰</div>
+        <div class="ios-card-title">{{ t('svc_maint') }}</div>
+        <div class="ios-card-desc">{{ t('svc_maint_desc') }}</div>
+
+        <div class="ios-card-actions mt-3">
+          <a class="ios-link" href="{{ url_for('pages.page', slug='services') }}">
+            {{ t('view_services') }} →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="ios-card ios-card-soft h-100">
+        <div class="ios-icon">⚙️</div>
+        <div class="ios-card-title">{{ t('svc_install') }}</div>
+        <div class="ios-card-desc">{{ t('svc_install_desc') }}</div>
+        <div class="ios-card-actions mt-3">
+          <a class="ios-link" href="{{ url_for('pages.page', slug='about') }}">
+            {{ t('read_more') }} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if current_lang == 'th' %}
+  {{ product.name_th }}
+{% else %}
+  {{ product.name_en }}
+{% endif %}
+
+| BGM
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <!-- breadcrumb -->
+  <nav class="mb-4 small text-secondary">
+
+    <a href="{{ url_for('products.products_list') }}">
+      {{ t('nav_products') }}
+    </a>
+
+    /
+
+    <a href="{{ url_for(
+        'products.products_category',
+        slug=product.category_key
+    ) }}">
+
+      {% if current_lang == 'th' %}
+        {{ product.category_name_th }}
+      {% else %}
+        {{ product.category_name_en }}
+      {% endif %}
+
+    </a>
+
+    /
+
+    {% if current_lang == 'th' %}
+      {{ product.name_th }}
+    {% else %}
+      {{ product.name_en }}
+    {% endif %}
+
+  </nav>
+
+  <div class="row g-5 align-items-start">
+
+    <!-- IMAGE -->
+    <div class="col-lg-6">
+
+      <img
+        src="{{ url_for(
+          'static',
+          filename='img/products/' ~ (product.image or 'default.jpg')
+        ) }}"
+        class="img-fluid rounded-4 shadow-sm"
+
+        alt="
+        {% if current_lang == 'th' %}
+          {{ product.name_th }}
+        {% else %}
+          {{ product.name_en }}
+        {% endif %}
+        "
+      >
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="col-lg-6">
+
+      <!-- CATEGORY -->
+      <div class="text-secondary small mb-2">
+
+        {% if current_lang == 'th' %}
+          {{ product.category_name_th }}
+        {% else %}
+          {{ product.category_name_en }}
+        {% endif %}
+
+      </div>
+
+      <!-- NAME -->
+      <h1 class="fw-bold mb-3">
+
+        {% if current_lang == 'th' %}
+          {{ product.name_th }}
+        {% else %}
+          {{ product.name_en }}
+        {% endif %}
+
+      </h1>
+
+      <!-- SHORT -->
+      <p class="text-secondary">
+
+        {% if current_lang == 'th' %}
+          {{ product.short_th }}
+        {% else %}
+          {{ product.short_en }}
+        {% endif %}
+
+      </p>
+
+      <!-- ========================= -->
+      <!-- 📄 PDF SECTION -->
+      <!-- ========================= -->
+
+      {% if product.catalog_pdf
+         or product.manual_pdf
+         or product.other_pdf %}
+
+      <hr class="my-4">
+
+      <h5 class="fw-bold mb-3">
+        📄 {{ t('documents') }}
+      </h5>
+
+      <div class="d-flex flex-column gap-2">
+
+        <!-- CATALOG -->
+        {% if product.catalog_pdf %}
+
+        <a
+          class="btn btn-outline-primary text-start"
+
+          href="{{ url_for(
+            'static',
+            filename='pdf/products/' ~ product.catalog_pdf
+          ) }}"
+
+          target="_blank"
+        >
+
+          📘 {{ t('catalog_pdf') }}
+
+        </a>
+
+        {% endif %}
+
+        <!-- MANUAL -->
+        {% if product.manual_pdf %}
+
+        <a
+          class="btn btn-outline-success text-start"
+
+          href="{{ url_for(
+            'static',
+            filename='pdf/products/' ~ product.manual_pdf
+          ) }}"
+
+          target="_blank"
+        >
+
+          📙 {{ t('manual_pdf') }}
+
+        </a>
+
+        {% endif %}
+
+        <!-- OTHER -->
+        {% if product.other_pdf %}
+
+        <a
+          class="btn btn-outline-secondary text-start"
+
+          href="{{ url_for(
+            'static',
+            filename='pdf/products/' ~ product.other_pdf
+          ) }}"
+
+          target="_blank"
+        >
+
+          📎 {{ t('other_document') }}
+
+        </a>
+
+        {% endif %}
+
+      </div>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
