@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block title %}
-<<<<<<< HEAD
 
 {% if current_lang == 'th' %}
   {{ product.name_th }}
@@ -11,16 +10,12 @@
 
 | BGM
 
-=======
-{{ t(product.name_key) }} | BGM
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 {% endblock %}
 
 {% block content %}
 
 <div class="container py-5">
 
-<<<<<<< HEAD
   <!-- breadcrumb -->
   <nav class="mb-4 small text-secondary">
 
@@ -31,9 +26,9 @@
     /
 
     <a href="{{ url_for(
-        'products.products_category',
-        slug=product.category_key
-    ) }}">
+    'products.products_category',
+    key=product.category_key
+) }}">
 
       {% if current_lang == 'th' %}
         {{ product.category_name_th }}
@@ -72,20 +67,10 @@
           {{ product.name_en }}
         {% endif %}
         "
-=======
-  <div class="row g-5 align-items-start">
-
-    <div class="col-lg-6">
-
-      <img
-        src="{{ url_for('static', filename='img/products/' ~ product.image) }}"
-        class="img-fluid rounded-4 shadow-sm"
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
       >
 
     </div>
 
-<<<<<<< HEAD
     <!-- CONTENT -->
     <div class="col-lg-6">
 
@@ -201,29 +186,6 @@
       </div>
 
       {% endif %}
-=======
-    <div class="col-lg-6">
-
-      <div class="text-secondary small mb-2">
-        {{ t(product.category_key) }}
-      </div>
-
-      <h1 class="fw-bold mb-3">
-        {{ t(product.name_key) }}
-      </h1>
-
-      <p class="text-secondary">
-        {{ t(product.short_key) }}
-      </p>
-
-      <ul class="mt-4">
-
-        {% for fk in product.features_keys %}
-        <li>{{ t(fk) }}</li>
-        {% endfor %}
-
-      </ul>
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
     </div>
 

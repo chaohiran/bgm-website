@@ -1,39 +1,29 @@
 {% extends "base.html" %}
-<<<<<<< HEAD
 
 {% block title %}{{ t('catagory_products') }} | BGM{% endblock %}
-=======
-{% block title %}{{ t('nav_products') }} | BGM{% endblock %}
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
 {% block content %}
 <div class="container py-5">
 
-<<<<<<< HEAD
-  <!-- header -->
+  <!-- HEADER -->
   <div class="d-flex flex-column flex-md-row gap-3 justify-content-between align-items-md-end mb-4">
 
     <div>
-      <h1 class="h3 fw-bold mb-1">{{ t('catagory_products') }}</h1>
-=======
-  <div class="d-flex flex-column flex-md-row gap-3 align-items-md-end justify-content-between mb-4">
+      <h1 class="h3 fw-bold mb-1">
+        {{ t('catagory_products') }}
+      </h1>
 
-    <div>
-      <h1 class="h3 fw-bold mb-1">{{ t('nav_products') }}</h1>
-
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
       <div class="text-secondary small">
         {{ t('products_hint') }}
       </div>
     </div>
 
-<<<<<<< HEAD
     {% if session.get('admin') %}
-  <a href="{{ url_for('admin_categories.create') }}"
-     class="btn btn-success">
-    {{ t('add category') }}
-  </a>
-{% endif %}
+    <a href="{{ url_for('admin_categories.create') }}"
+       class="btn btn-success">
+      {{ t('add category') }}
+    </a>
+    {% endif %}
 
   </div>
 
@@ -48,110 +38,56 @@
 
       <div class="card product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
-
-        <!-- LINK -->
-        <a href="{{ url_for('products.products_category', slug=c.key) }}"
+        <!-- CATEGORY LINK -->
+        <a href="{{ url_for('products.products_category', key=c['key']) }}"
            class="text-decoration-none text-dark">
 
-          <!-- IMAGE (SAFE VERSION) -->
+          <!-- IMAGE -->
           <img
-            src="{{ url_for('static', filename='img/categories/' ~ (c.image if c.image else 'default.jpg')) }}"
+            src="{{ url_for(
+              'static',
+              filename='img/categories/' ~ (c['image'] or 'default.jpg')
+            ) }}"
             class="card-img-top"
             style="height:180px;object-fit:cover;"
-            alt="{{ c.name }}"
+            alt="{{ c['name_en'] }}"
             onerror="this.src='{{ url_for('static', filename='img/categories/default.jpg') }}'"
           >
 
+          <!-- BODY -->
           <div class="card-body text-center p-4">
 
             <h5 class="fw-bold mb-2">
-              {% if current_lang == 'en' %}
-  {{ c.name_en }}
-{% else %}
-  {{ c.name_th }}
-{% endif %}
+
+              {% if current_lang == 'th' %}
+                {{ c['name_th'] }}
+              {% else %}
+                {{ c['name_en'] }}
+              {% endif %}
+
             </h5>
 
             <div class="text-secondary small">
-              {{ c.key }}
+              {{ c['key'] }}
             </div>
-=======
-    <div class="d-flex gap-2 flex-wrap">
-
-      {% if session.get('admin') %}
-
-      <a href="{{ url_for('admin_products.create') }}"
-         class="btn btn-success">
-        + Add Product
-      </a>
-
-
-      {% endif %}
-
-      <form class="d-flex gap-2" method="GET">
-
-        <input
-          class="form-control"
-          name="q"
-          value="{{ q }}"
-          placeholder="{{ t('products_search_placeholder') }}"
-        >
-
-        <button class="btn btn-primary">
-          {{ t('products_search_btn') }}
-        </button>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-  {% if grouped_items %}
-
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-
-    {% for category, products in grouped_items.items() %}
-    {% for p in products %}
-
-    <div class="col">
-
-      <div class="card product-card h-100 border-0 shadow-sm rounded-4">
-
-        <a href="{{ url_for('products.product_detail',
-            category=p['category_key'],
-            slug=p['slug']) }}"
-           class="text-decoration-none text-dark">
-
-          <div class="product-thumb">
-
-            <img
-              src="{{ url_for('static',
-              filename='img/products/' ~ p['image']) }}"
-              alt="{{ t(p['name_key']) }}"
-              loading="lazy"
-            >
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
           </div>
 
         </a>
 
-<<<<<<< HEAD
         <!-- ADMIN BUTTONS -->
         {% if session.get('admin') %}
 
         <div class="card-body pt-0 d-flex gap-2">
 
-          <!-- EDIT -->
-          <a href="{{ url_for('admin_categories.edit', category_id=c.id) }}"
+          <a href="{{ url_for('admin_categories.edit',
+              category_id=c['id']) }}"
              class="btn btn-warning btn-sm w-100">
             Edit
           </a>
 
-          <!-- DELETE -->
-          <a href="{{ url_for('admin_categories.delete', category_id=c.id) }}"
+          <a href="{{ url_for('admin_categories.delete',
+              category_id=c['id']) }}"
              class="btn btn-danger btn-sm w-100"
              onclick="return confirm('Delete category?')">
             Delete
@@ -161,68 +97,17 @@
 
         {% endif %}
 
-=======
-        <div class="card-body p-4">
-
-          <div class="d-flex justify-content-between align-items-start">
-
-            <div>
-
-              <div class="fw-bold">
-                {{ t(p['name_key']) }}
-              </div>
-
-              <div class="text-secondary small">
-                {{ t(p['category_key']) }}
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="mt-3 text-secondary">
-            {{ t(p['short_key']) }}
-          </div>
-
-          {% if session.get('admin') %}
-
-          <div class="d-flex gap-2 mt-4">
-
-            <a href="{{ url_for('admin_products.edit',
-                product_id=p['id']) }}"
-               class="btn btn-warning btn-sm w-100">
-              Edit
-            </a>
-
-            <a href="{{ url_for('admin_products.delete',
-                product_id=p['id']) }}"
-               class="btn btn-danger btn-sm w-100"
-               onclick="return confirm('Delete product?')">
-              Delete
-            </a>
-
-          </div>
-
-          {% endif %}
-
-        </div>
-
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
       </div>
 
     </div>
 
     {% endfor %}
-<<<<<<< HEAD
-=======
-    {% endfor %}
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
   </div>
 
   {% else %}
 
-  <div class="alert alert-warning">
+  <div class="alert alert-warning rounded-4">
     {{ t('products_not_found') }}
   </div>
 
@@ -230,13 +115,8 @@
 
 </div>
 
-<<<<<<< HEAD
-<style>
-=======
-
 <style>
 
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 .product-card{
   transition:.25s;
   border-radius:14px;
@@ -246,19 +126,8 @@
   transform:translateY(-6px);
   box-shadow:0 14px 35px rgba(0,0,0,.15);
 }
-<<<<<<< HEAD
-=======
 
-.product-thumb{
-  height:180px;
-  overflow:hidden;
-  border-radius:14px 14px 0 0;
-}
-
-.product-thumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.product-card img{
   transition:.35s;
 }
 
@@ -266,7 +135,6 @@
   transform:scale(1.05);
 }
 
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 </style>
 
 {% endblock %}

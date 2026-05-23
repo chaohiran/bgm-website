@@ -15,31 +15,24 @@
   <!-- HEADER -->
   <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <!-- CATEGORY TITLE -->
     <h1 class="h4 fw-bold mb-0">
-
       {% if current_lang == 'th' %}
         {{ category['name_th'] }}
       {% else %}
         {{ category['name_en'] }}
       {% endif %}
-
     </h1>
 
-    <!-- ADMIN ADD BUTTON -->
     {% if session.get('admin') %}
-
     <a href="{{ url_for('admin_products.create') }}"
        class="btn btn-primary rounded-3">
-
       {{ t('add_products') }}
-
     </a>
-
     {% endif %}
 
   </div>
 
+  <!-- PRODUCTS -->
   {% if items %}
 
   <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -49,97 +42,66 @@
 
       <div class="card product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
-        <!-- PRODUCT LINK -->
-        <a href="{{ url_for(
-          'products.product_detail',
-          slug=p['slug']
-        ) }}"
+        <!-- PRODUCT LINK (FIXED) -->
+        <a href="{{ url_for('products.product_detail',
+    category_key=p['category_key'],
+    slug=p['slug']
+) }}"
            class="text-decoration-none text-dark">
 
           <!-- IMAGE -->
           <img
-            src="{{ url_for(
-              'static',
+            src="{{ url_for('static',
               filename='img/products/' ~ (p['image'] or 'default.jpg')
             ) }}"
-
             class="card-img-top"
-
             style="height:220px;object-fit:cover;"
-
-            alt="
-            {% if current_lang == 'th' %}
-              {{ p['name_th'] }}
-            {% else %}
-              {{ p['name_en'] }}
-            {% endif %}
-            "
-
-            onerror="this.src='{{ url_for(
-              'static',
-              filename='img/products/default.jpg'
-            ) }}'"
+            alt="{% if current_lang == 'th' %}{{ p['name_th'] }}{% else %}{{ p['name_en'] }}{% endif %}"
+            onerror="this.src='{{ url_for('static', filename='img/products/default.jpg') }}'"
           >
 
-          <!-- BODY -->
           <div class="card-body p-4">
 
-            <!-- NAME -->
             <h5 class="fw-bold mb-2">
-
               {% if current_lang == 'th' %}
                 {{ p['name_th'] }}
               {% else %}
                 {{ p['name_en'] }}
               {% endif %}
-
             </h5>
 
-            <!-- SHORT -->
             <p class="text-secondary small mb-0">
-
               {% if current_lang == 'th' %}
                 {{ p['short_th'] }}
               {% else %}
                 {{ p['short_en'] }}
               {% endif %}
-
             </p>
 
           </div>
 
         </a>
 
-        <!-- ADMIN BUTTONS -->
+        <!-- ADMIN -->
         {% if session.get('admin') %}
-
         <div class="card-body pt-0 d-flex gap-2">
 
-          <!-- EDIT -->
           <a href="{{ url_for(
-            'admin_products.edit',
-            product_id=p['id']
-          ) }}"
-             class="btn btn-warning btn-sm w-100">
+    'admin_products.edit',
+    product_id=p['id'],
+    next=request.full_path
+) }}"
+   class="btn btn-warning btn-sm w-100">
+  {{ t('edit') }}
+</a>
 
-            {{ t('edit') }}
-
-          </a>
-
-          <!-- DELETE -->
-          <a href="{{ url_for(
-            'admin_products.delete',
-            product_id=p['id']
-          ) }}"
+          <a href="{{ url_for('admin_products.delete', product_id=p['id']) }}"
              class="btn btn-danger btn-sm w-100"
              onclick="return confirm('{{ t('delete_product_confirm') }}')">
-
             {{ t('delete') }}
-
           </a>
 
         </div>
-
         {% endif %}
 
       </div>
@@ -152,9 +114,7 @@
   {% else %}
 
   <div class="alert alert-warning rounded-4">
-
     {{ t('products_not_found') }}
-
   </div>
 
   {% endif %}
@@ -162,7 +122,6 @@
 </div>
 
 <style>
-
 .product-card{
   transition:.25s;
 }
@@ -171,7 +130,6 @@
   transform:translateY(-6px);
   box-shadow:0 14px 35px rgba(0,0,0,.15);
 }
-
 </style>
 
 {% endblock %}

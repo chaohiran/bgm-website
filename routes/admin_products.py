@@ -1,27 +1,10 @@
-<<<<<<< HEAD
 from flask import Blueprint, render_template, request, redirect, url_for, abort
 from database import get_db
 from utils.admin_guard import admin_required
-=======
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    abort
-)
-
-from utils.admin_guard import admin_required
-from database import get_db
-
-from werkzeug.utils import secure_filename
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
 import os
 import uuid
 
-<<<<<<< HEAD
 admin_products_bp = Blueprint(
     "admin_products",
     __name__,
@@ -38,270 +21,137 @@ PDF_FOLDER = os.path.normpath(
     os.path.join(BASE_DIR, "..", "static", "pdf", "products")
 )
 
+
 # =========================
 # SAVE PDF
 # =========================
 def save_pdf(file):
     if file and file.filename:
+
         os.makedirs(PDF_FOLDER, exist_ok=True)
 
         ext = file.filename.rsplit(".", 1)[-1].lower()
+
         if ext != "pdf":
             return None
 
         filename = f"{uuid.uuid4().hex}.pdf"
+
         path = os.path.join(PDF_FOLDER, filename)
+
         file.save(path)
+
         return filename
 
     return None
 
 
 # =========================
-# LIST
-=======
-
-admin_products_bp = Blueprint(
-    "admin_products",
-    __name__,
-    url_prefix="/products"
-)
-
-UPLOAD_FOLDER = "static/uploads/products"
-
-
-# =========================
-# 📦 LIST PRODUCTS
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
+# LIST (redirect to frontend products)
 # =========================
 @admin_products_bp.route("/")
 @admin_required
 def index():
-<<<<<<< HEAD
+
     db = get_db()
-    try:
-        category = db.execute("""
-            SELECT key FROM categories
-            ORDER BY id ASC LIMIT 1
-        """).fetchone()
 
-        if category:
-            return redirect(url_for(
-                "products.products_category",
-                slug=category["key"]
-            ))
+    category = db.execute("""
+        SELECT key FROM categories
+        ORDER BY id ASC
+        LIMIT 1
+    """).fetchone()
 
-        return redirect(url_for("products.products_list"))
+    db.close()
 
-    finally:
-        db.close()
+    if category:
+        return redirect(url_for("products.products_category", slug=category["key"]))
+
+    return redirect(url_for("products.products_list"))
 
 
 # =========================
 # CREATE
-=======
-
-    db = get_db()
-
-    products = db.execute("""
-        SELECT * FROM products
-        ORDER BY id DESC
-    """).fetchall()
-
-    db.close()
-
-    return render_template(
-        "products.html",
-        products=products
-    )
-
-
-# =========================
-# ➕ CREATE PRODUCT
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 # =========================
 @admin_products_bp.route("/create", methods=["GET", "POST"])
 @admin_required
 def create():
 
-<<<<<<< HEAD
     db = get_db()
 
-    try:
-        categories = db.execute("""
-            SELECT * FROM categories ORDER BY id ASC
-        """).fetchall()
-
-        if request.method == "POST":
-
-            slug = request.form.get("slug")
-
-            name_th = request.form.get("name_th")
-            name_en = request.form.get("name_en")
-
-            short_th = request.form.get("short_th")
-            short_en = request.form.get("short_en")
-
-            category_id = request.form.get("category_id")
-
-            # validation
-            if not name_th or not name_en:
-                return "Name required", 400
-
-            existing = db.execute("""
-                SELECT id FROM products WHERE slug = ?
-            """, (slug,)).fetchone()
-
-            if existing:
-                return "Slug already exists", 400
-
-            # IMAGE
-            image = None
-            file = request.files.get("image_file")
-
-            if file and file.filename:
-                os.makedirs(IMAGE_FOLDER, exist_ok=True)
-
-                ext = file.filename.rsplit(".", 1)[-1].lower()
-                filename = f"{uuid.uuid4().hex}.{ext}"
-
-                file.save(os.path.join(IMAGE_FOLDER, filename))
-                image = filename
-
-            # PDF
-            catalog_pdf = save_pdf(request.files.get("catalog_pdf"))
-            manual_pdf = save_pdf(request.files.get("manual_pdf"))
-            other_pdf = save_pdf(request.files.get("other_pdf"))
-
-            db.execute("""
-                INSERT INTO products (
-                    slug,
-                    name_th,
-                    name_en,
-                    short_th,
-                    short_en,
-                    category_id,
-                    image,
-                    catalog_pdf,
-                    manual_pdf,
-                    other_pdf
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                slug,
-                name_th,
-                name_en,
-                short_th,
-                short_en,
-                category_id,
-                image,
-                catalog_pdf,
-                manual_pdf,
-                other_pdf
-            ))
-
-            db.commit()
-
-            return redirect(url_for("products.products_list"))
-
-        return render_template(
-            "admin/products/create.html",
-            categories=categories
-        )
-
-    finally:
-        db.close()
-
-
-# =========================
-# EDIT
-=======
-    error = None
+    categories = db.execute("""
+        SELECT * FROM categories ORDER BY id ASC
+    """).fetchall()
 
     if request.method == "POST":
 
         slug = (request.form.get("slug") or "").strip()
-        name_key = (request.form.get("name_key") or "").strip()
-        category_key = (request.form.get("category_key") or "").strip()
-        short_key = (request.form.get("short_key") or "").strip()
+        name_th = (request.form.get("name_th") or "").strip()
+        name_en = (request.form.get("name_en") or "").strip()
+        short_th = request.form.get("short_th")
+        short_en = request.form.get("short_en")
+        category_id = request.form.get("category_id")
 
-        # =========================
-        # VALIDATION
-        # =========================
-        if not slug or not name_key or not category_key:
+        if not slug or not name_th or not name_en:
+            db.close()
+            return "Missing required fields", 400
 
-            error = "กรุณากรอกข้อมูลให้ครบ"
+        existing = db.execute("""
+            SELECT id FROM products WHERE slug = ?
+        """, (slug,)).fetchone()
 
-            return render_template(
-                "admin/products/create.html",
-                error=error
-            )
+        if existing:
+            db.close()
+            return "Slug already exists", 400
 
-        # =========================
-        # IMAGE UPLOAD
-        # =========================
-        file = request.files.get("image")
-
-        filename = "default.jpg"
+        # IMAGE
+        image = None
+        file = request.files.get("image_file")
 
         if file and file.filename:
-
-            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+            os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
             ext = file.filename.rsplit(".", 1)[-1].lower()
-
             filename = f"{uuid.uuid4().hex}.{ext}"
 
-            filepath = os.path.join(
-                UPLOAD_FOLDER,
-                filename
+            file.save(os.path.join(IMAGE_FOLDER, filename))
+            image = filename
+
+        # PDFs
+        catalog_pdf = save_pdf(request.files.get("catalog_pdf"))
+        manual_pdf = save_pdf(request.files.get("manual_pdf"))
+        other_pdf = save_pdf(request.files.get("other_pdf"))
+
+        db.execute("""
+            INSERT INTO products (
+                slug, name_th, name_en,
+                short_th, short_en,
+                category_id, image,
+                catalog_pdf, manual_pdf, other_pdf
             )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            slug, name_th, name_en,
+            short_th, short_en,
+            category_id, image,
+            catalog_pdf, manual_pdf, other_pdf
+        ))
 
-            file.save(filepath)
+        db.commit()
+        db.close()
 
-        # =========================
-        # SAVE DB
-        # =========================
-        try:
+        next_url = request.form.get("next")
 
-            db = get_db()
+        return redirect(
+            next_url or url_for("products.products_list")
+        )
 
-            db.execute("""
-                INSERT INTO products
-                (slug, name_key, category_key, short_key, image)
-                VALUES (?, ?, ?, ?, ?)
-            """, (
-                slug,
-                name_key,
-                category_key,
-                short_key,
-                filename
-            ))
+    db.close()
 
-            db.commit()
-            db.close()
-
-            return redirect(
-                url_for("admin_products.index")
-            )
-
-        except Exception as e:
-
-            error = f"เกิดข้อผิดพลาด: {str(e)}"
-
-            return render_template(
-                "admin/products/create.html",
-                error=error
-            )
-
-    return render_template(
-        "admin/products/create.html"
-    )
+    return render_template("admin/products/create.html", categories=categories)
 
 
 # =========================
-# ✏️ EDIT PRODUCT
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
+# EDIT
 # =========================
 @admin_products_bp.route("/<int:product_id>/edit", methods=["GET", "POST"])
 @admin_required
@@ -309,184 +159,101 @@ def edit(product_id):
 
     db = get_db()
 
-<<<<<<< HEAD
-    try:
-        product = db.execute("""
-            SELECT * FROM products WHERE id = ?
-        """, (product_id,)).fetchone()
-
-        if not product:
-            abort(404)
-
-        categories = db.execute("""
-            SELECT * FROM categories ORDER BY id ASC
-        """).fetchall()
-
-        if request.method == "POST":
-
-            slug = request.form.get("slug")
-
-            name_th = request.form.get("name_th")
-            name_en = request.form.get("name_en")
-
-            short_th = request.form.get("short_th")
-            short_en = request.form.get("short_en")
-
-            category_id = request.form.get("category_id")
-
-            if not name_th or not name_en:
-                return "Name required", 400
-
-            existing = db.execute("""
-                SELECT id FROM products
-                WHERE slug = ? AND id != ?
-            """, (slug, product_id)).fetchone()
-
-            if existing:
-                return "Slug already exists", 400
-
-            # IMAGE
-            image = product["image"]
-            file = request.files.get("image_file")
-
-            if file and file.filename:
-
-                if image and image != "default.jpg":
-                    old = os.path.join(IMAGE_FOLDER, image)
-                    if os.path.exists(old):
-                        os.remove(old)
-
-                ext = file.filename.rsplit(".", 1)[-1].lower()
-                filename = f"{uuid.uuid4().hex}.{ext}"
-
-                file.save(os.path.join(IMAGE_FOLDER, filename))
-                image = filename
-
-            # PDF UPDATE
-            def handle_pdf(old, new_file):
-                new = save_pdf(new_file)
-
-                if new and old:
-                    path = os.path.join(PDF_FOLDER, old)
-                    if os.path.exists(path):
-                        os.remove(path)
-
-                return new if new else old
-
-            catalog_pdf = handle_pdf(product["catalog_pdf"], request.files.get("catalog_pdf"))
-            manual_pdf = handle_pdf(product["manual_pdf"], request.files.get("manual_pdf"))
-            other_pdf = handle_pdf(product["other_pdf"], request.files.get("other_pdf"))
-
-            db.execute("""
-                UPDATE products
-                SET slug=?,
-                    name_th=?,
-                    name_en=?,
-                    short_th=?,
-                    short_en=?,
-                    category_id=?,
-                    image=?,
-                    catalog_pdf=?,
-                    manual_pdf=?,
-                    other_pdf=?
-                WHERE id=?
-            """, (
-                slug,
-                name_th,
-                name_en,
-                short_th,
-                short_en,
-                category_id,
-                image,
-                catalog_pdf,
-                manual_pdf,
-                other_pdf,
-                product_id
-            ))
-
-            db.commit()
-
-            return redirect(url_for("products.products_list"))
-
-        return render_template(
-            "admin/products/edit.html",
-            product=product,
-            categories=categories
-        )
-
-    finally:
-        db.close()
-
-
-# =========================
-# DELETE PRODUCT
-=======
-    product = db.execute(
-        "SELECT * FROM products WHERE id = ?",
-        (product_id,)
-    ).fetchone()
+    product = db.execute("""
+        SELECT
+            p.*,
+            c.key AS category_key
+        FROM products p
+        JOIN categories c
+            ON p.category_id = c.id
+        WHERE p.id = ?
+    """, (product_id,)).fetchone()
 
     if not product:
         db.close()
         abort(404)
 
+    categories = db.execute("""
+        SELECT * FROM categories ORDER BY id ASC
+    """).fetchall()
+
     if request.method == "POST":
 
-        slug = request.form["slug"]
-        name_key = request.form["name_key"]
-        category_key = request.form["category_key"]
-        short_key = request.form["short_key"]
+        slug = (request.form.get("slug") or "").strip()
+        name_th = (request.form.get("name_th") or "").strip()
+        name_en = (request.form.get("name_en") or "").strip()
+        short_th = request.form.get("short_th")
+        short_en = request.form.get("short_en")
+        category_id = request.form.get("category_id")
 
+        # IMAGE UPDATE
         image = product["image"]
-
-        # =========================
-        # FILE UPLOAD
-        # =========================
         file = request.files.get("image_file")
 
         if file and file.filename:
 
-            filename = secure_filename(file.filename)
+            if image and image != "default.jpg":
+                old = os.path.join(IMAGE_FOLDER, image)
+                if os.path.exists(old):
+                    os.remove(old)
 
-            upload_path = os.path.join(
-                "static",
-                "img",
-                "products",
-                filename
-            )
+            ext = file.filename.rsplit(".", 1)[-1].lower()
+            filename = f"{uuid.uuid4().hex}.{ext}"
 
-            file.save(upload_path)
-
+            file.save(os.path.join(IMAGE_FOLDER, filename))
             image = filename
+
+        # PDF UPDATE
+        def update_pdf(old, file):
+            new = save_pdf(file)
+
+            if new and old:
+                old_path = os.path.join(PDF_FOLDER, old)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+
+            return new or old
+
+        catalog_pdf = update_pdf(product["catalog_pdf"], request.files.get("catalog_pdf"))
+        manual_pdf = update_pdf(product["manual_pdf"], request.files.get("manual_pdf"))
+        other_pdf = update_pdf(product["other_pdf"], request.files.get("other_pdf"))
 
         db.execute("""
             UPDATE products
-            SET slug=?, name_key=?, category_key=?, short_key=?, image=?
+            SET slug=?, name_th=?, name_en=?,
+                short_th=?, short_en=?,
+                category_id=?, image=?,
+                catalog_pdf=?, manual_pdf=?, other_pdf=?
             WHERE id=?
         """, (
-            slug,
-            name_key,
-            category_key,
-            short_key,
-            image,
+            slug, name_th, name_en,
+            short_th, short_en,
+            category_id, image,
+            catalog_pdf, manual_pdf, other_pdf,
             product_id
         ))
 
         db.commit()
         db.close()
 
-        return redirect(url_for("admin_products.index"))
+        next_page = request.args.get("next")
+
+        if next_page:
+            return redirect(next_page)
+
+        return redirect(url_for("products.products_list"))
 
     db.close()
 
     return render_template(
         "admin/products/edit.html",
-        product=product
+        product=product,
+        categories=categories
     )
 
+
 # =========================
-# 🗑 DELETE PRODUCT
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
+# DELETE
 # =========================
 @admin_products_bp.route("/delete/<int:product_id>")
 @admin_required
@@ -494,35 +261,36 @@ def delete(product_id):
 
     db = get_db()
 
-<<<<<<< HEAD
-    try:
-        product = db.execute("""
-            SELECT * FROM products WHERE id = ?
-        """, (product_id,)).fetchone()
+    product = db.execute("""
+        SELECT * FROM products WHERE id = ?
+    """, (product_id,)).fetchone()
 
-        if not product:
-            abort(404)
-
-        # delete image
-        if product["image"] and product["image"] != "default.jpg":
-            path = os.path.join(IMAGE_FOLDER, product["image"])
-            if os.path.exists(path):
-                os.remove(path)
-
-        # delete pdf
-        for f in ["catalog_pdf", "manual_pdf", "other_pdf"]:
-            if product[f]:
-                p = os.path.join(PDF_FOLDER, product[f])
-                if os.path.exists(p):
-                    os.remove(p)
-
-        db.execute("DELETE FROM products WHERE id = ?", (product_id,))
-        db.commit()
-
-        return redirect(url_for("products.products_list"))
-
-    finally:
+    if not product:
         db.close()
+        abort(404)
+
+    # delete image
+    if product["image"] and product["image"] != "default.jpg":
+        img_path = os.path.join(IMAGE_FOLDER, product["image"])
+        if os.path.exists(img_path):
+            os.remove(img_path)
+
+    # delete PDFs
+    for f in ["catalog_pdf", "manual_pdf", "other_pdf"]:
+        if product[f]:
+            p = os.path.join(PDF_FOLDER, product[f])
+            if os.path.exists(p):
+                os.remove(p)
+
+    db.execute("DELETE FROM products WHERE id = ?", (product_id,))
+    db.commit()
+    db.close()
+
+    next_url = request.referrer
+
+    return redirect(
+        next_url or url_for("products.products_list")
+    )
 
 
 # =========================
@@ -534,73 +302,40 @@ def delete_pdf(product_id, pdf_type):
 
     db = get_db()
 
-    try:
-        product = db.execute("""
-            SELECT * FROM products WHERE id = ?
-        """, (product_id,)).fetchone()
-
-        if not product:
-            abort(404)
-
-        mapping = {
-            "catalog": "catalog_pdf",
-            "manual": "manual_pdf",
-            "other": "other_pdf"
-        }
-
-        if pdf_type not in mapping:
-            abort(400)
-
-        column = mapping[pdf_type]
-        filename = product[column]
-
-        if filename:
-            path = os.path.join(PDF_FOLDER, filename)
-            if os.path.exists(path):
-                os.remove(path)
-
-        db.execute(f"""
-            UPDATE products
-            SET {column} = NULL
-=======
     product = db.execute("""
-        SELECT * FROM products
-        WHERE id = ?
+        SELECT * FROM products WHERE id = ?
     """, (product_id,)).fetchone()
 
-    if product:
-
-        # delete image
-        if (
-            product["image"]
-            and product["image"] != "default.jpg"
-        ):
-
-            image_path = os.path.join(
-                UPLOAD_FOLDER,
-                product["image"]
-            )
-
-            if os.path.exists(image_path):
-                os.remove(image_path)
-
-        db.execute("""
-            DELETE FROM products
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
-            WHERE id = ?
-        """, (product_id,))
-
-        db.commit()
-
-<<<<<<< HEAD
-        return redirect(url_for("admin_products.edit", product_id=product_id))
-
-    finally:
+    if not product:
         db.close()
-=======
+        abort(404)
+
+    mapping = {
+        "catalog": "catalog_pdf",
+        "manual": "manual_pdf",
+        "other": "other_pdf"
+    }
+
+    if pdf_type not in mapping:
+        db.close()
+        abort(400)
+
+    column = mapping[pdf_type]
+
+    filename = product[column]
+
+    if filename:
+        path = os.path.join(PDF_FOLDER, filename)
+        if os.path.exists(path):
+            os.remove(path)
+
+    db.execute(f"""
+        UPDATE products
+        SET {column} = NULL
+        WHERE id = ?
+    """, (product_id,))
+
+    db.commit()
     db.close()
 
-    return redirect(
-        url_for("admin_products.index")
-    )
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
+    return redirect(url_for("admin_products.edit", product_id=product_id))
