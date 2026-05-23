@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block title %}Edit Product | BGM{% endblock %}
@@ -297,3 +298,59 @@
 
 </div>
 {% endblock %}
+=======
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Product</title>
+</head>
+<body>
+
+<h1>✏ Edit Product</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <label>Slug</label><br>
+  <input name="slug" value="{{ product['slug'] }}" required>
+  <br><br>
+
+  <label>Name Key</label><br>
+  <input name="name_key" value="{{ product['name_key'] }}" required>
+  <br><br>
+
+  <label>Category Key</label><br>
+  <input name="category_key" value="{{ product['category_key'] }}" required>
+  <br><br>
+
+  <label>Short Key</label><br>
+  <input name="short_key" value="{{ product['short_key'] }}">
+  <br><br>
+
+  <label>Current Image</label><br>
+
+  <img
+    src="{{ url_for('static', filename='img/products/' ~ product['image']) }}"
+    width="150"
+  >
+
+  <br><br>
+
+  <label>Upload New Image</label><br>
+  <input type="file" name="image_file">
+  <br><br>
+
+  <button type="submit">
+    Save Changes
+  </button>
+
+</form>
+
+<hr>
+
+<a href="{{ url_for('admin_products.index') }}">
+  ← Back
+</a>
+
+</body>
+</html>
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf

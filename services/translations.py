@@ -135,7 +135,10 @@ TRANSLATIONS = {
           "p6_name": "มอเตอร์ Teco",
 
           # ================= SERVICES PAGE =================
+<<<<<<< HEAD
           "catagory_products": "หมวดหมู่สินค้า",
+=======
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
           "services_title": "บริการของเรา",
           "services_lead": "บริการด้านอุปกรณ์ Explosion Proof และระบบไฟฟ้าอุตสาหกรรม",
 
@@ -156,16 +159,23 @@ TRANSLATIONS = {
           "username": "ชื่อผู้ใช้",
           "password": "รหัสผ่าน",
           "login": "เข้าสู่ระบบ",
+<<<<<<< HEAD
 
           "add category": "+ เพิ่มหมวดหมู่",
           "add products": "+ เพิ่มสินค้า",
+=======
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
             },
 
     # =========================================================
     "en": {
         "company_name": "Belgium Industrial Co., Ltd.",
         "nav_home": "Home",
+<<<<<<< HEAD
         "nav_products": "Product",
+=======
+        "nav_products": "Products",
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
         "nav_services": "Services",
         "nav_about": "About",
         "nav_contact": "Contact",
@@ -290,7 +300,10 @@ TRANSLATIONS = {
           "p6_name": "Teco Motor",
 
           # ================= SERVICES PAGE =================
+<<<<<<< HEAD
           "catagory_products": "Product category",
+=======
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
           "services_title": "Our Services",
           "services_lead": "Explosion-proof equipment and industrial electrical services",
 
@@ -311,7 +324,10 @@ TRANSLATIONS = {
           "username": "Username",
           "password": "Password",
           "login": "Login",
+<<<<<<< HEAD
           "add category": "+ Add Category",
           "add products": "+ Add products",
+=======
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
     },
 }

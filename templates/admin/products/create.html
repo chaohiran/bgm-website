@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block title %}
@@ -161,3 +162,100 @@
 
 </div>
 {% endblock %}
+=======
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Product</title>
+
+  <style>
+
+    body{
+      font-family:Arial;
+      max-width:700px;
+      margin:auto;
+      padding:40px;
+    }
+
+    input{
+      width:100%;
+      padding:10px;
+      margin-top:5px;
+      margin-bottom:20px;
+    }
+
+    button{
+      padding:10px 20px;
+      cursor:pointer;
+    }
+
+    #preview{
+      width:200px;
+      display:none;
+      margin-bottom:20px;
+      border-radius:10px;
+      border:1px solid #ddd;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<h1>➕ เพิ่มสินค้า</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <label>Slug</label>
+  <input name="slug" required>
+
+  <label>Name Key</label>
+  <input name="name_key" required>
+
+  <label>Category Key</label>
+  <input name="category_key" required>
+
+  <label>Short Key</label>
+  <input name="short_key">
+
+  <label>Product Image</label>
+  <input
+    type="file"
+    name="image"
+    accept="image/*"
+    onchange="previewImage(event)"
+  >
+
+  <!-- IMAGE PREVIEW -->
+  <img id="preview">
+
+  <button type="submit">
+    Save Product
+  </button>
+
+</form>
+
+<hr>
+
+<p>
+  <a href="{{ url_for('admin_products.index') }}">
+    ← Back
+  </a>
+</p>
+
+<script>
+
+function previewImage(event){
+
+    const preview = document.getElementById("preview");
+
+    preview.src = URL.createObjectURL(event.target.files[0]);
+
+    preview.style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
+>>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
