@@ -13,10 +13,7 @@ def create_app():
     from routes.lang import lang_bp
     from routes.admin_auth import admin_auth_bp
     from routes.admin_products import admin_products_bp
-<<<<<<< HEAD
     from routes.admin_categories import admin_categories_bp
-=======
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
     app.register_blueprint(home_bp)
     app.register_blueprint(products_bp, url_prefix="/products")
@@ -24,11 +21,9 @@ def create_app():
     app.register_blueprint(lang_bp, url_prefix="/lang")
     app.register_blueprint(admin_auth_bp)
     app.register_blueprint(admin_products_bp)
-<<<<<<< HEAD
     app.register_blueprint(admin_categories_bp)
-=======
->>>>>>> f6667076cc1645c66d4d6232231fce5bb9f97cdf
 
+    # ✅ FIXED CONTEXT PROCESSOR
     @app.context_processor
     def inject_i18n():
         return {
@@ -37,7 +32,7 @@ def create_app():
             "supported_langs": SUPPORTED_LANGS
         }
 
-    # 🔥 เพิ่ม sitemap route
+    # sitemap
     @app.route("/sitemap.xml")
     def sitemap():
         return send_from_directory("static", "sitemap.xml")
