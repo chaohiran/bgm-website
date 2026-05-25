@@ -18,7 +18,7 @@ def products_list():
     categories = db.execute("""
         SELECT *
         FROM categories
-        ORDER BY id ASC
+        ORDER BY sort_order ASC, id ASC
     """).fetchall()
 
     db.close()
@@ -57,7 +57,7 @@ def products_category(key):
         JOIN categories c
             ON p.category_id = c.id
         WHERE c.key = ?
-        ORDER BY p.id DESC
+        ORDER BY p.sort_order ASC, p.id DESC
     """, (key,)).fetchall()
 
     db.close()

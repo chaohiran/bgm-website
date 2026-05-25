@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort
+from flask import Blueprint, render_template, request, redirect, url_for, abort, jsonify
 from database import get_db
 from utils.admin_guard import admin_required
 
@@ -28,8 +28,9 @@ def index():
     db = get_db()
 
     categories = db.execute("""
-        SELECT * FROM categories
-        ORDER BY id ASC
+        SELECT *
+        FROM categories
+        ORDER BY sort_order ASC, id ASC
     """).fetchall()
 
     db.close()
@@ -194,3 +195,34 @@ def delete(category_id):
     db.close()
 
     return redirect(url_for("admin_categories.index"))
+
+# =========================
+# SAVE CATEGORY ORDER
+# =========================
+@admin_categories_bp.route("/save-order", methods=["POST"])
+@admin_required
+def save_order():
+
+    data = request.get_json()
+
+    ids = data.get("ids", [])
+
+    db = get_db()
+
+    for index, category_id in enumerate(ids):
+
+        db.execute("""
+            UPDATE categories
+            SET sort_order = ?
+            WHERE id = ?
+        """, (
+            index + 1,
+            category_id
+        ))
+
+    db.commit()
+    db.close()
+
+    return jsonify({
+        "success": True
+    })

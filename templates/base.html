@@ -127,15 +127,33 @@ NAVBAR
         </li>
 
         <!-- PRODUCTS -->
-        <li class="nav-item">
-          <a class="nav-link nav-quote
+        <li class="nav-item dropdown">
+
+  <a class="nav-link nav-quote dropdown-toggle
+     {{ 'nav-quote-active' if request.endpoint.startswith('products.') }}"
+     href="#"
+     role="button"
+     data-bs-toggle="dropdown">
+
+    {{ t('nav_products') }}
+
+  </a>
+
+  <ul class="dropdown-menu shadow border-0 rounded-3">
+
+
+    <!-- กันระเบิด -->
+    <li>
+      <a class="dropdown-item
              {{ 'nav-quote-active' if request.endpoint == 'products.products_list' }}"
              href="{{ url_for('products.products_list') }}">
+        {{ t('nav_products2') }}
+      </a>
+    </li>
 
-            {{ t('nav_products') }}
+  </ul>
 
-          </a>
-        </li>
+</li>
 
         <!-- SERVICES -->
         <li class="nav-item">
@@ -325,8 +343,8 @@ FOOTER
 
         <p class="ios-footer-text">
           02-060-5615<br>
+          064-596-3945<br>
           091-782-4262<br>
-          096-874-5916<br>
           belgiumindustrial@gmail.com
         </p>
 
@@ -343,19 +361,19 @@ FOOTER
 
           <div class="ios-footer-social">
 
-            <a href="mailto:belgiumindustrial@gmail.com">
+            <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCHrgmVXwVWtpScmtkrvbhJbXsWkqMFsMCRzVTGbxGGFgcxlnStZLDnrNTTPllQNmNGlPfsB">
               <i class="fa-solid fa-envelope"></i>
             </a>
 
-            <a href="#" target="_blank">
+            <a href="https://line.me/ti/p/1dbbSK-SLt" target="_blank">
               <i class="fa-brands fa-line"></i>
             </a>
 
-            <a href="#" target="_blank">
+            <a href="https://www.facebook.com/belgiumindustrial" target="_blank">
               <i class="fa-brands fa-facebook-f"></i>
             </a>
 
-            <a href="#" target="_blank">
+            <a href="https://www.instagram.com/" target="_blank">
               <i class="fa-brands fa-instagram"></i>
             </a>
 

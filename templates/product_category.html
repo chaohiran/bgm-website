@@ -13,21 +13,37 @@
 <div class="container py-5">
 
   <!-- HEADER -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex justify-content-between align-items-start mb-4">
 
-    <h1 class="h4 fw-bold mb-0">
-      {% if current_lang == 'th' %}
-        {{ category['name_th'] }}
-      {% else %}
-        {{ category['name_en'] }}
-      {% endif %}
-    </h1>
+    <div>
+      <h1 class="h4 fw-bold mb-1">
+        {% if current_lang == 'th' %}
+          {{ category['name_th'] }}
+        {% else %}
+          {{ category['name_en'] }}
+        {% endif %}
+      </h1>
+
+      <div class="text-secondary small">
+        {{ t('products_hint') }}
+      </div>
+    </div>
 
     {% if session.get('admin') %}
-    <a href="{{ url_for('admin_products.create') }}"
-       class="btn btn-primary rounded-3">
-      {{ t('add_products') }}
-    </a>
+
+    <div class="d-flex gap-2">
+
+      <a href="{{ url_for('admin_products.create') }}"
+         class="btn btn-primary rounded-3">
+        {{ t('add_products') }}
+      </a>
+
+      <button id="toggle-sort" class="btn btn-dark">
+        Move
+      </button>
+
+    </div>
+
     {% endif %}
 
   </div>
@@ -35,18 +51,20 @@
   <!-- PRODUCTS -->
   {% if items %}
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"
+     id="sortable-products">
 
     {% for p in items %}
-    <div class="col">
+    <div class="col sortable-item"
+         data-id="{{ p['id'] }}">
 
       <div class="card product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
-        <!-- PRODUCT LINK (FIXED) -->
+        <!-- PRODUCT LINK -->
         <a href="{{ url_for('products.product_detail',
-    category_key=p['category_key'],
-    slug=p['slug']
-) }}"
+            category_key=p['category_key'],
+            slug=p['slug']
+        ) }}"
            class="text-decoration-none text-dark">
 
           <!-- IMAGE -->
@@ -87,13 +105,13 @@
         <div class="card-body pt-0 d-flex gap-2">
 
           <a href="{{ url_for(
-    'admin_products.edit',
-    product_id=p['id'],
-    next=request.full_path
-) }}"
-   class="btn btn-warning btn-sm w-100">
-  {{ t('edit') }}
-</a>
+              'admin_products.edit',
+              product_id=p['id'],
+              next=request.full_path
+          ) }}"
+             class="btn btn-warning btn-sm w-100">
+            {{ t('edit') }}
+          </a>
 
           <a href="{{ url_for('admin_products.delete', product_id=p['id']) }}"
              class="btn btn-danger btn-sm w-100"
@@ -122,6 +140,7 @@
 </div>
 
 <style>
+
 .product-card{
   transition:.25s;
 }
@@ -130,6 +149,78 @@
   transform:translateY(-6px);
   box-shadow:0 14px 35px rgba(0,0,0,.15);
 }
+
+.sortable-ghost{
+  opacity:.4;
+}
+
+.sortable-chosen{
+  cursor:grabbing;
+}
+
+.move-mode .sortable-item{
+  cursor:grab;
+}
+
 </style>
+
+<!-- SORTABLE -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+
+let sortable = null
+
+const button = document.getElementById("toggle-sort")
+
+button?.addEventListener("click", () => {
+
+    const container = document.getElementById("sortable-products")
+
+    if (!sortable) {
+
+        document.body.classList.add("move-mode")
+
+        sortable = new Sortable(container, {
+
+            animation: 150,
+            draggable: ".sortable-item",
+
+            onEnd: async () => {
+
+                const ids = [...document.querySelectorAll(".sortable-item")]
+                    .map(el => el.dataset.id)
+
+                await fetch("/admin/products/save-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ ids })
+                })
+
+            }
+
+        })
+
+        button.innerText = "Finish"
+        button.classList.remove("btn-dark")
+        button.classList.add("btn-success")
+
+    } else {
+
+        sortable.destroy()
+        sortable = null
+
+        document.body.classList.remove("move-mode")
+
+        button.innerText = "Move"
+        button.classList.remove("btn-success")
+        button.classList.add("btn-dark")
+    }
+
+})
+
+</script>
 
 {% endblock %}

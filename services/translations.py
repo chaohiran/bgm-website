@@ -5,6 +5,8 @@ TRANSLATIONS = {
         "company_name": "บริษัท เบลเยียม อินดัสเทรียล จำกัด",
         "nav_home": "หน้าแรก",
         "nav_products": "สินค้า",
+        "nav_products2": "อุปกรณ์กันระเบิด",
+        "nav_products3": "อื่นๆ",
         "nav_services": "บริการ",
         "nav_about": "เกี่ยวกับเรา",
         "nav_contact": "ติดต่อ",
@@ -56,7 +58,8 @@ TRANSLATIONS = {
         # ================= PRODUCTS =================
         "catagory_products": "หมวดหมู่สินค้า",
 
-        "products_hint": "รองรับมือถือ / แท็บเล็ต / คอมพิวเตอร์",
+        "products_hint": "อุปกรณ์กันระเบิด",
+        "products_hint2": "สินค้าอื่นๆ",
         "products_search_placeholder": "ค้นหาสินค้า...",
         "products_search_btn": "ค้นหา",
         "products_not_found": "ไม่พบสินค้า",
@@ -144,6 +147,8 @@ TRANSLATIONS = {
         "company_name": "Belgium Industrial Co., Ltd.",
         "nav_home": "Home",
         "nav_products": "Products",
+        "nav_products2": "Explosion proof",
+        "nav_products3": "Other",
         "nav_services": "Services",
         "nav_about": "About",
         "nav_contact": "Contact",
@@ -195,7 +200,8 @@ TRANSLATIONS = {
         # ================= PRODUCTS =================
         "catagory_products": "Product Categories",
 
-        "products_hint": "Responsive for mobile, tablet, and desktop",
+        "products_hint": "Explosion proof equipment",
+        "products_hint2": "Other products",
         "products_search_placeholder": "Search products...",
         "products_search_btn": "Search",
         "products_not_found": "No products found",

@@ -19,10 +19,21 @@
     </div>
 
     {% if session.get('admin') %}
-    <a href="{{ url_for('admin_categories.create') }}"
-       class="btn btn-success">
-      {{ t('add_category') }}
-    </a>
+
+    <div class="d-flex gap-2">
+
+      <a href="{{ url_for('admin_categories.create') }}"
+         class="btn btn-primary rounded-3">
+        {{ t('add_category') }}
+      </a>
+
+      <button id="toggle-sort"
+              class="btn btn-dark">
+        Move
+      </button>
+
+    </div>
+
     {% endif %}
 
   </div>
@@ -30,11 +41,17 @@
   <!-- CATEGORIES -->
   {% if categories %}
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div
+    class="row row-cols-1 row-cols-md-3 g-4"
+    id="sortable-categories"
+  >
 
     {% for c in categories %}
 
-    <div class="col">
+    <div
+      class="col sortable-item"
+      data-id="{{ c['id'] }}"
+    >
 
       <div class="card product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
@@ -80,12 +97,14 @@
 
         <div class="card-body pt-0 d-flex gap-2">
 
+          <!-- EDIT -->
           <a href="{{ url_for('admin_categories.edit',
               category_id=c['id']) }}"
              class="btn btn-warning btn-sm w-100">
             Edit
           </a>
 
+          <!-- DELETE -->
           <a href="{{ url_for('admin_categories.delete',
               category_id=c['id']) }}"
              class="btn btn-danger btn-sm w-100"
@@ -135,6 +154,86 @@
   transform:scale(1.05);
 }
 
+.sortable-ghost{
+  opacity:.4;
+}
+
+.sortable-chosen{
+  cursor:grabbing;
+}
+
+.move-mode .sortable-item{
+  cursor:grab;
+}
+
 </style>
+
+<!-- SORTABLE -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+
+let sortable = null
+
+const button = document.getElementById("toggle-sort")
+
+button?.addEventListener("click", () => {
+
+    const container = document.getElementById("sortable-categories")
+
+    if (!sortable) {
+
+        document.body.classList.add("move-mode")
+
+        sortable = new Sortable(container, {
+
+            animation: 150,
+
+            draggable: ".sortable-item",
+
+            onEnd: async () => {
+
+                const ids = [...document.querySelectorAll(".sortable-item")]
+                    .map(el => el.dataset.id)
+
+                await fetch("/admin/categories/save-order", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        ids: ids
+                    })
+
+                })
+
+            }
+
+        })
+
+        button.innerText = "Finish"
+        button.classList.remove("btn-dark")
+        button.classList.add("btn-success")
+
+    } else {
+
+        sortable.destroy()
+
+        sortable = null
+
+        document.body.classList.remove("move-mode")
+
+        button.innerText = "Move"
+        button.classList.remove("btn-success")
+        button.classList.add("btn-dark")
+
+    }
+
+})
+
+</script>
 
 {% endblock %}

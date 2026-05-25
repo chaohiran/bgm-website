@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort
+from flask import Blueprint, render_template, request, redirect, url_for, abort, jsonify
 from database import get_db
 from utils.admin_guard import admin_required
 
@@ -57,7 +57,7 @@ def index():
 
     category = db.execute("""
         SELECT key FROM categories
-        ORDER BY id ASC
+        ORDER BY sort_order ASC, id ASC
         LIMIT 1
     """).fetchone()
 
@@ -79,7 +79,9 @@ def create():
     db = get_db()
 
     categories = db.execute("""
-        SELECT * FROM categories ORDER BY id ASC
+        SELECT *
+        FROM categories
+        ORDER BY sort_order ASC, id ASC
     """).fetchall()
 
     if request.method == "POST":
@@ -105,17 +107,29 @@ def create():
             db.close()
             return "Slug already exists", 400
 
+        # SORT ORDER
+        last_sort = db.execute("""
+            SELECT COALESCE(MAX(sort_order), 0)
+            FROM products
+            WHERE category_id = ?
+        """, (category_id,)).fetchone()[0]
+
+        sort_order = last_sort + 1
+
         # IMAGE
         image = None
         file = request.files.get("image_file")
 
         if file and file.filename:
+
             os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
             ext = file.filename.rsplit(".", 1)[-1].lower()
+
             filename = f"{uuid.uuid4().hex}.{ext}"
 
             file.save(os.path.join(IMAGE_FOLDER, filename))
+
             image = filename
 
         # PDFs
@@ -128,15 +142,15 @@ def create():
                 slug, name_th, name_en,
                 short_th, short_en,
                 description_th, description_en,
-                category_id, image,
+                category_id, sort_order, image,
                 catalog_pdf, manual_pdf, other_pdf
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             slug, name_th, name_en,
             short_th, short_en,
             description_th, description_en,
-            category_id, image,
+            category_id, sort_order, image,
             catalog_pdf, manual_pdf, other_pdf
         ))
 
@@ -151,7 +165,10 @@ def create():
 
     db.close()
 
-    return render_template("admin/products/create.html", categories=categories)
+    return render_template(
+        "admin/products/create.html",
+        categories=categories
+    )
 
 
 # =========================
@@ -178,7 +195,9 @@ def edit(product_id):
         abort(404)
 
     categories = db.execute("""
-        SELECT * FROM categories ORDER BY id ASC
+        SELECT *
+        FROM categories
+        ORDER BY sort_order ASC, id ASC
     """).fetchall()
 
     if request.method == "POST":
@@ -347,3 +366,34 @@ def delete_pdf(product_id, pdf_type):
     db.close()
 
     return redirect(url_for("admin_products.edit", product_id=product_id))
+
+# =========================
+# SAVE ORDER
+# =========================
+@admin_products_bp.route("/save-order", methods=["POST"])
+@admin_required
+def save_order():
+
+    data = request.get_json()
+
+    ids = data.get("ids", [])
+
+    db = get_db()
+
+    for index, product_id in enumerate(ids):
+
+        db.execute("""
+            UPDATE products
+            SET sort_order = ?
+            WHERE id = ?
+        """, (
+            index + 1,
+            product_id
+        ))
+
+    db.commit()
+    db.close()
+
+    return jsonify({
+        "success": True
+    })
